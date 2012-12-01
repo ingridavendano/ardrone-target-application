@@ -1,0 +1,41 @@
+<html>
+  <head>
+    <script type='text/javascript' src="cordova-2.2.0.js"></script>
+    <title>Node Copter Follower</title>
+
+    <script type='text/javascript'>
+      count = 0;
+
+      document.addEventListener("deviceready", onDeviceReady, false);
+
+      function onDeviceReady() {
+        setInterval(function() {
+          navigator.geolocation.getCurrentPosition(onSuccess, onError);
+        }, 5000);
+      }
+
+      function onSuccess(positionData) {
+        count++;
+
+        var json = JSON.stringify(positionData);
+        var request = new XMLHttpRequest();
+
+        // XXX: Server must be running on this IP address
+        request.open("POST", "http://172.22.161.100:8888", true);
+        request.send(json);
+      }
+
+
+      function onError(error) {
+        alert('code: '    + error.code    + '\n' +
+        'message: ' + error.message + '\n');
+      }
+
+    </script>
+  </head>
+  <body>
+    <p>GPS Ping is active</p>
+    <p id='count'></p>
+  </body>
+</html>
+
